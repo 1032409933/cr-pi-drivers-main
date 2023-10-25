@@ -1,5 +1,7 @@
 require("dotenv").config();
 const { Sequelize } = require("sequelize");
+const DriverModel = require("./models/Driver");
+const TeamModel = require("./models/Team");
 
 const fs = require('fs');
 const path = require('path');
@@ -28,7 +30,16 @@ let entries = Object.entries(sequelize.models);
 let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Driver } = sequelize.models;
+const { Driver,Team } = sequelize.models;
+
+// DriverModel(sequelize);
+// TeamModel(sequelize);
+
+Driver.belongsToMany(Team,{through: "DriverTeam" });
+Team.belongsToMany(Driver,{through: "DriverTeam" });
+
+// Driver.hasMany(Team);
+// Team.hasMany(Driver);  
 
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
