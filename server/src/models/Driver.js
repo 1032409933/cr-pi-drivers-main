@@ -31,7 +31,7 @@ module.exports = (sequelize) => {
       },
       description: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull:false,
       },
       image: {
         type: DataTypes.STRING,
@@ -62,6 +62,11 @@ module.exports = (sequelize) => {
             msg: "La fecha de nacimiento no es válida.",
           },
         },
+      },
+      created: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
       },
   },{timestamps:false})
   }

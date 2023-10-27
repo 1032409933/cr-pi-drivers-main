@@ -1,11 +1,18 @@
-const { createDriver, getDriverByID } = require("../Controllers/DriverController");
+const { createDriver, getDriverByID, searchDriverByName, getAllDrivers } = require("../Controllers/DriverController");
 const Driver = require("../models/Driver");
 
-const getDriverHandler = (req,res) =>{
+const getDriverHandler = async (req,res) =>{
+
     const {name} = req.query;
-    if (name) res.send (`llamar a la funcion que busca por nombre  ${name}`);
-    else res.send (`quiero enviar todos los usuarios `)
+
+    const results = name? await searchDriverByName(name): await getAllDrivers();
+
+   if (results.length)res.status(200).json(results);
+   else res.status(400).json({error:`usuario ${name} no encontrado en la base de datos`});
 }
+
+  
+
 
 const getDriverHandlerId = async(req,res) =>{
     const driverId = req.params.id;
@@ -20,6 +27,10 @@ const getDriverHandlerId = async(req,res) =>{
     }
 }
 
+
+
+
+
 const postDriverHandler = async (req,res) => {
     const {forename,surname,description,image,nationality,dob} = req.body;
     try {
@@ -30,6 +41,11 @@ const postDriverHandler = async (req,res) => {
         res.status(400).json ({error:error.message});
     }
 };
+
+
+
+
+
 
 module.exports = {
     getDriverHandler,
